@@ -1,0 +1,20 @@
+{
+  "movements": [
+    {
+      "movement_id": "m1",
+      "warehouse": "w1",
+      "sku": "s1",
+      "lot": "l1",
+      "day": "2026-10-01",
+      "quantity": "10"
+    },
+    {
+      "movement_id": "m2",
+      "warehouse": "w1",
+      "sku": "s1",
+      "lot": "l1",
+      "day": "2026-10-03",
+      "quantity": "-3"
+    }
+  ]
+}
