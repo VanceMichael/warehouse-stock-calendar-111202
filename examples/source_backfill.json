@@ -1,0 +1,27 @@
+{
+  "movements": [
+    {
+      "movement_id": "m4",
+      "warehouse": "w1",
+      "sku": "s1",
+      "lot": "l1",
+      "event_time": "2026-10-09T10:10:00+08:00",
+      "day": "2026-10-09",
+      "receive_seq": 4,
+      "quantity": "4",
+      "reversal_of": null
+    },
+    {
+      "movement_id": "m5",
+      "warehouse": "w1",
+      "sku": "s1",
+      "lot": "l1",
+      "event_time": "2026-10-12T15:30:00+08:00",
+      "day": "2026-10-12",
+      "receive_seq": 5,
+      "quantity": "-2",
+      "reversal_of": null
+    }
+  ],
+  "counts": []
+}

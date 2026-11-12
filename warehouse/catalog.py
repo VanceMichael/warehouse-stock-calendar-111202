@@ -2,24 +2,41 @@ import hashlib
 import json
 import sqlite3
 from contextlib import contextmanager
+from datetime import datetime, timezone
 from pathlib import Path
 
-from .definition import SCHEMA
+from .clock import DEFAULT_TIMEZONE, zone
+from .definition import INDEXES, INTERNAL_TABLES, SCHEMA
+from .ledger import precheck_bundle
 
 
 def encode(value):
     return json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(',', ':'), allow_nan=False).encode('utf-8')
 
 
-def connect(path):
+def connect(path, tz_name=DEFAULT_TIMEZONE):
     connection = sqlite3.connect(path, timeout=5, isolation_level=None)
     connection.row_factory = sqlite3.Row
     connection.execute('PRAGMA foreign_keys=ON')
     connection.execute('PRAGMA busy_timeout=5000')
     for table, columns in SCHEMA.items():
         connection.execute(f'CREATE TABLE IF NOT EXISTS "{table}" ({columns})')
-    connection.execute('CREATE TABLE IF NOT EXISTS ingest_batches (batch TEXT PRIMARY KEY, digest TEXT NOT NULL, rows INTEGER NOT NULL)')
+    for statement in INTERNAL_TABLES.values():
+        connection.execute(statement)
+    for statement in INDEXES:
+        connection.execute(statement)
+    tz = zone(tz_name)
+    stored = connection.execute('SELECT value FROM settings WHERE name=?', ('timezone',)).fetchone()
+    if stored is None:
+        connection.execute('INSERT INTO settings VALUES (?, ?)', ('timezone', tz_name))
+    elif stored['value'] != tz_name:
+        raise ValueError(f'数据库业务时区固定为 {stored["value"]}，不能改用 {tz_name}')
     return connection
+
+
+def get_timezone(connection):
+    record = connection.execute('SELECT value FROM settings WHERE name=?', ('timezone',)).fetchone()
+    return zone(record['value'])
 
 
 @contextmanager
@@ -47,6 +64,7 @@ def load_bundle(connection, bundle, batch):
             if previous['digest'] != digest:
                 raise ValueError('同批次内容不一致')
             return False
+        precheck_bundle(connection, bundle, get_timezone(connection))
         for table, rows in bundle.items():
             if not isinstance(rows, list):
                 raise ValueError('数据集合必须是记录数组')
@@ -64,3 +82,7 @@ def load_bundle(connection, bundle, batch):
 
 def load_file(connection, path, batch):
     return load_bundle(connection, json.loads(Path(path).read_text(encoding='utf-8')), batch)
+
+
+def utc_now_text():
+    return datetime.now(timezone.utc).isoformat()

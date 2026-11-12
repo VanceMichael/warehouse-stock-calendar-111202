@@ -1,3 +1,6 @@
 {
-  "movements": "movement_id TEXT PRIMARY KEY, warehouse TEXT NOT NULL, sku TEXT NOT NULL, lot TEXT NOT NULL, day TEXT NOT NULL, quantity TEXT NOT NULL"
+  "movements": "movement_id TEXT PRIMARY KEY, warehouse TEXT NOT NULL, sku TEXT NOT NULL, lot TEXT NOT NULL, event_time TEXT NOT NULL, day TEXT NOT NULL, receive_seq INTEGER NOT NULL UNIQUE, quantity TEXT NOT NULL, reversal_of TEXT REFERENCES movements(movement_id), CHECK (receive_seq > 0)",
+  "counts": "count_id TEXT PRIMARY KEY, warehouse TEXT NOT NULL, sku TEXT NOT NULL, lot TEXT NOT NULL, cutoff_time TEXT NOT NULL, cutoff_day TEXT NOT NULL, version INTEGER NOT NULL, quantity TEXT NOT NULL, CHECK (version >= 1), UNIQUE (warehouse, sku, lot, cutoff_day, version)",
+  "daily_snapshots": "warehouse, sku, lot, day, eod_quantity(NULL=无可靠基准), inbound, outbound, status(ok|negative|unknown), basis(来源解释 JSON)",
+  "monthly_snapshots": "warehouse, sku, lot, month, opening_quantity, eod_quantity, avg_daily_quantity, inbound, outbound, count_adjustment, known_days, unknown_days, status(ok|negative|partial), basis(含守恒校验)"
 }

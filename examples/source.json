@@ -5,16 +5,77 @@
       "warehouse": "w1",
       "sku": "s1",
       "lot": "l1",
+      "event_time": "2026-10-01T09:15:00+08:00",
       "day": "2026-10-01",
-      "quantity": "10"
+      "receive_seq": 1,
+      "quantity": "10",
+      "reversal_of": null
     },
     {
       "movement_id": "m2",
       "warehouse": "w1",
       "sku": "s1",
       "lot": "l1",
+      "event_time": "2026-10-03T14:40:00+08:00",
       "day": "2026-10-03",
-      "quantity": "-3"
+      "receive_seq": 2,
+      "quantity": "5",
+      "reversal_of": null
+    },
+    {
+      "movement_id": "m3",
+      "warehouse": "w1",
+      "sku": "s1",
+      "lot": "l1",
+      "event_time": "2026-10-03T18:05:00+08:00",
+      "day": "2026-10-03",
+      "receive_seq": 3,
+      "quantity": "-3",
+      "reversal_of": null
+    },
+    {
+      "movement_id": "m6",
+      "warehouse": "w1",
+      "sku": "s1",
+      "lot": "l1",
+      "event_time": "2026-11-06T11:00:00+08:00",
+      "day": "2026-11-06",
+      "receive_seq": 6,
+      "quantity": "-2",
+      "reversal_of": null
+    },
+    {
+      "movement_id": "m7",
+      "warehouse": "w1",
+      "sku": "s1",
+      "lot": "l1",
+      "event_time": "2026-11-08T16:20:00+08:00",
+      "day": "2026-11-08",
+      "receive_seq": 7,
+      "quantity": "-3",
+      "reversal_of": null
+    }
+  ],
+  "counts": [
+    {
+      "count_id": "c1",
+      "warehouse": "w1",
+      "sku": "s1",
+      "lot": "l1",
+      "cutoff_time": "2026-10-05T23:59:59+08:00",
+      "cutoff_day": "2026-10-05",
+      "version": 1,
+      "quantity": "9"
+    },
+    {
+      "count_id": "c2",
+      "warehouse": "w1",
+      "sku": "s1",
+      "lot": "l1",
+      "cutoff_time": "2026-11-05T23:59:59+08:00",
+      "cutoff_day": "2026-11-05",
+      "version": 1,
+      "quantity": "9"
     }
   ]
 }
